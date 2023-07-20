@@ -45,21 +45,21 @@ resource "aws_lambda_permission" "apigw_lambda" {
   principal     = "apigateway.amazonaws.com"
 
   # More: http://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-control-access-using-iam-policies-to-invoke-api.html
-  source_arn = "arn:aws:execute-api:${var.myregion}:${var.accountId}:${aws_api_gateway_rest_api.api_rest.id}/*/${aws_api_gateway_method.method.http_method}${aws_api_gateway_rest_api.api_rest.root_resource_id}"
+  source_arn = "arn:aws:execute-api:${var.myregion}:${var.accountId}:${aws_api_gateway_rest_api.api_rest.id}/*/${aws_api_gateway_method.method.http_method}/"
 }
-resource "aws_api_gateway_deployment" "api_deploy" {
-  rest_api_id = aws_api_gateway_rest_api.api_rest.id
-  depends_on = [
-        aws_api_gateway_method.method,
-        aws_api_gateway_integration.integration
-      ]
-}
+# resource "aws_api_gateway_deployment" "api_deploy" {
+#   rest_api_id = aws_api_gateway_rest_api.api_rest.id
+#   depends_on = [
+#         aws_api_gateway_method.method,
+#         aws_api_gateway_integration.integration
+#       ]
+# }
 
-resource "aws_api_gateway_stage" "api_stage" {
-  deployment_id = aws_api_gateway_deployment.api_deploy.id
-  rest_api_id   = aws_api_gateway_rest_api.api_rest.id
-  stage_name    = "auth"
-}
+# resource "aws_api_gateway_stage" "api_stage" {
+#   deployment_id = aws_api_gateway_deployment.api_deploy.id
+#   rest_api_id   = aws_api_gateway_rest_api.api_rest.id
+#   stage_name    = "auth"
+# }
 
 data "aws_iam_policy_document" "lambda_role" {
   statement {
@@ -96,4 +96,17 @@ resource "aws_lambda_function" "LambdaAuth" {
       foo = "bar"
     }
   }
+}
+resource "aws_api_gateway_method_response" "response_200" {
+  rest_api_id = aws_api_gateway_rest_api.api_rest.id
+  resource_id = aws_api_gateway_rest_api.api_rest.root_resource_id
+  http_method = aws_api_gateway_method.method.http_method
+  status_code = "200"
+}
+
+resource "aws_api_gateway_integration_response" "integration_response" {
+  rest_api_id = aws_api_gateway_rest_api.api_rest.id
+  resource_id = aws_api_gateway_rest_api.api_rest.root_resource_id
+  http_method = aws_api_gateway_method.method.http_method
+  status_code = aws_api_gateway_method_response.response_200.status_code
 }
