@@ -1,5 +1,5 @@
-resource "aws_cognito_user_pool" "commit_users" {
-  name = "commit_users"
+# resource "aws_cognito_user_pool" "commit_users" {
+#   name = "commit_users"
 
   #configure sign-in options
   username_attributes = ["email"]
