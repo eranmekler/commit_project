@@ -1,17 +1,17 @@
 resource "aws_dynamodb_table" "commit_dynamo_db_table" {
   name           = "commit_db"
-  hash_key       = "Username"  # partition key
-  range_key      = "Timestamp" # sort key
+  hash_key       = "username"  # partition key
+  range_key      = "timestamp" # sort key
   write_capacity = 20
   read_capacity  = 20
 
    attribute {
-    name = "Username"
+    name = "username"
     type = "S"
   }
 
   attribute {
-    name = "Timestamp"
+    name = "timestamp"
     type = "S"
   }
 
