@@ -2,6 +2,9 @@
 #   name = "commit_users"
 
   #configure sign-in options
+  resource "aws_cognito_user_pool" "commit_users" {
+  name = "mypool"
+
   username_attributes = ["email"]
   auto_verified_attributes = ["email"]
 
@@ -30,7 +33,7 @@
       priority = 1
     }
   }
-}
+  }
 
 # configuration of the cognito hosted ui.need to be configured
 
@@ -45,12 +48,12 @@ resource "aws_cognito_user_pool_domain" "commit_cognito_hosted_ui" {
 resource "aws_cognito_user_pool_client" "commit_client" {
   name                                 = "commit_client"
   user_pool_id                         = aws_cognito_user_pool.commit_users.id
-  generate_secret                      = false
+  generate_secret                      = true
   allowed_oauth_flows                  = ["code"] #maybe need to be configured to lambda
   allowed_oauth_scopes                 = ["openid", "email"]
   supported_identity_providers         = ["COGNITO"]
-  callback_urls                        = ["https://example.com/callback"]
-  default_redirect_uri                 = "https://example.com/callback"
+  callback_urls                        = [aws_api_gateway_deployment.example.invoke_url]
+  default_redirect_uri                 =  aws_api_gateway_deployment.example.invoke_url
   allowed_oauth_flows_user_pool_client = true
 }
 
