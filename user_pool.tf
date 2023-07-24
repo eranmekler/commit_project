@@ -7,7 +7,12 @@
 
   username_attributes = ["email"]
   auto_verified_attributes = ["email"]
-
+  schema {
+    name                = "username"
+    attribute_data_type = "String"
+    mutable             = true
+    required            = false
+  }
   # allow non-admin user to create new users
   admin_create_user_config {
     allow_admin_create_user_only = false
@@ -52,8 +57,9 @@ resource "aws_cognito_user_pool_client" "commit_client" {
   allowed_oauth_flows                  = ["code"] #maybe need to be configured to lambda
   allowed_oauth_scopes                 = ["openid", "email"]
   supported_identity_providers         = ["COGNITO"]
-  callback_urls                        = [aws_api_gateway_deployment.example.invoke_url]
-  default_redirect_uri                 =  aws_api_gateway_deployment.example.invoke_url
+  callback_urls                        = ["${aws_api_gateway_deployment.example.invoke_url}dev/auth"]
+  default_redirect_uri                 =  "${aws_api_gateway_deployment.example.invoke_url}dev/auth"
   allowed_oauth_flows_user_pool_client = true
+  
 }
 
