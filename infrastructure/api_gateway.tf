@@ -1,7 +1,11 @@
 
+# Create the API Gateway REST API
+
 resource "aws_api_gateway_rest_api" "example_api" {
   name = "example_api"
 }
+
+# Define the 'auth' resource and its associated method and integration
 
 resource "aws_api_gateway_resource" "example_resource" {
   rest_api_id = aws_api_gateway_rest_api.example_api.id
@@ -30,9 +34,10 @@ resource "aws_lambda_permission" "apigw_lambda" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.example_lambda.function_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.example_api.execution_arn}/*"
+  source_arn    = "${aws_api_gateway_rest_api.example_api.execution_arn}/*"
 
 }
+# Define the 'auth/login' resource and its associated method, integration and authorizer
 
 resource "aws_api_gateway_resource" "example_resource_users" {
   rest_api_id = aws_api_gateway_rest_api.example_api.id
@@ -56,6 +61,7 @@ resource "aws_api_gateway_integration" "integration_users" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.example_lambda_users.invoke_arn
 }
+# Provide necessary permissions for the API Gateway to invoke the Lambdas
 
 resource "aws_lambda_permission" "apigw_lambda_users" {
   statement_id  = "AllowExecutionFromAPIGateway"
@@ -66,14 +72,14 @@ resource "aws_lambda_permission" "apigw_lambda_users" {
 
 
 }
-
+# Define cognito authorizer API gateway
 resource "aws_api_gateway_authorizer" "demo" {
-  name                   = "demo"
-  rest_api_id            = aws_api_gateway_rest_api.example_api.id
-  type                   = "COGNITO_USER_POOLS"
-  provider_arns          = ["arn:aws:cognito-idp:${var.myregion}:${var.accountId}:userpool/${aws_cognito_user_pool.commit_users.id}"]
+  name          = "demo"
+  rest_api_id   = aws_api_gateway_rest_api.example_api.id
+  type          = "COGNITO_USER_POOLS"
+  provider_arns = ["arn:aws:cognito-idp:${var.myregion}:${var.accountId}:userpool/${aws_cognito_user_pool.commit_users.id}"]
 }
-
+# Deployment for API gateway
 resource "aws_api_gateway_deployment" "example" {
   rest_api_id = aws_api_gateway_rest_api.example_api.id
   triggers = {

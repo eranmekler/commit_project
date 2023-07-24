@@ -1,8 +1,8 @@
 # resource "aws_cognito_user_pool" "commit_users" {
 #   name = "commit_users"
 
-  #configure sign-in options
-  resource "aws_cognito_user_pool" "commit_users" {
+#configure sign-in options
+resource "aws_cognito_user_pool" "commit_users" {
   name = "mypool"
 
   username_attributes      = ["email"]
@@ -20,24 +20,23 @@
 
   # configuring the password policy
   password_policy {
-    minimum_length = 8
+    minimum_length    = 8
     require_lowercase = anytrue([true])
     require_uppercase = anytrue([true])
     require_numbers   = anytrue([true])
     require_symbols   = anytrue([true])
   }
 
-  }
+}
 
 # configuration of the cognito hosted ui.need to be configured
 
 resource "aws_cognito_user_pool_domain" "commit_cognito_hosted_ui" {
-  domain        = var.commit_domain
-  user_pool_id  = aws_cognito_user_pool.commit_users.id
+  domain       = var.commit_domain
+  user_pool_id = aws_cognito_user_pool.commit_users.id
 }
 
 # app_client
-# checkout for needed configuration
 
 resource "aws_cognito_user_pool_client" "commit_client" {
   name                                 = "commit_client"
@@ -47,8 +46,8 @@ resource "aws_cognito_user_pool_client" "commit_client" {
   allowed_oauth_scopes                 = ["openid", "email"]
   supported_identity_providers         = ["COGNITO"]
   callback_urls                        = ["${aws_api_gateway_deployment.example.invoke_url}dev/auth", aws_api_gateway_deployment.example.invoke_url]
-  default_redirect_uri                 =  "${aws_api_gateway_deployment.example.invoke_url}dev/auth"
+  default_redirect_uri                 = "${aws_api_gateway_deployment.example.invoke_url}dev/auth"
   allowed_oauth_flows_user_pool_client = true
-  
+
 }
 

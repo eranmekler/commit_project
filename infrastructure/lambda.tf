@@ -26,7 +26,7 @@ resource "null_resource" "update_lambda_env" {
 
     EOT
   }
-  depends_on = [ aws_cognito_user_pool_client.commit_client ]
+  depends_on = [aws_cognito_user_pool_client.commit_client]
 }
 
 resource "aws_iam_role" "lambda_role" {
@@ -54,26 +54,26 @@ resource "aws_iam_role_policy" "LambdaAuthPolicy" {
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "logs:CreateLogGroup",
-            "Resource": "arn:aws:logs:${var.myregion}:${var.accountId}:*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-            ],
-            "Resource": [
-                "arn:aws:logs:${var.myregion}:${var.accountId}:log-group:/aws/lambda/LambdaAuth:*"
-            ]
-        }
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : "logs:CreateLogGroup",
+        "Resource" : "arn:aws:logs:${var.myregion}:${var.accountId}:*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Resource" : [
+          "arn:aws:logs:${var.myregion}:${var.accountId}:log-group:/aws/lambda/LambdaAuth:*"
+        ]
+      }
     ]
-}
-)
+    }
+  )
 }
 
 
@@ -88,72 +88,72 @@ resource "aws_lambda_function" "example_lambda_users" {
   layers        = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
-     DYNAMO_TABLE_NAME = aws_dynamodb_table.commit_dynamo_db_table.name
-     S3_BUCKET_NAME = aws_s3_bucket.commit_bucket.bucket
+      DYNAMO_TABLE_NAME = aws_dynamodb_table.commit_dynamo_db_table.name
+      S3_BUCKET_NAME    = aws_s3_bucket.commit_bucket.bucket
     }
   }
-  
+
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {
-  filename   = "./python/jwtpackage.zip"
-  layer_name = "lambda_layer_name"
+  filename            = "./python/jwtpackage.zip"
+  layer_name          = "lambda_layer_name"
   compatible_runtimes = ["python3.9"]
 }
 resource "aws_iam_policy" "LambdaPolicyUsers" {
   name        = "LambdaPolicyUsers"
   description = "Lambda policy"
 
-  
-  policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Sid": "LambdaPolicy",
-            "Effect": "Allow",
-            "Action": [
-                "ssm:GetParameters",
-                "ssm:GetParameter",
-                "ssm:DescribeParameters"
-            ],
-            "Resource": "arn:aws:ssm:${var.myregion}:${var.accountId}:*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "dynamodb:PutItem"
-            ],
-            "Resource": "arn:aws:dynamodb:${var.myregion}:${var.accountId}:table/commit_db"
-        },
-        {
-            "Sid": "S3BucketAccess",
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject"
-            ],
-            "Resource": [
-                "arn:aws:s3:::${aws_s3_bucket.commit_bucket.bucket}/*"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": "logs:CreateLogGroup",
-            "Resource": "arn:aws:logs:${var.myregion}:${var.accountId}:*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents"
-            ],
-            "Resource": [
-                "arn:aws:logs:${var.myregion}:${var.accountId}:log-group:/aws/lambda/LambdaForUsers:*"
-            ]
-        }
-    ]
-}
 
-)
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid" : "LambdaPolicy",
+        "Effect" : "Allow",
+        "Action" : [
+          "ssm:GetParameters",
+          "ssm:GetParameter",
+          "ssm:DescribeParameters"
+        ],
+        "Resource" : "arn:aws:ssm:${var.myregion}:${var.accountId}:*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "dynamodb:PutItem"
+        ],
+        "Resource" : "arn:aws:dynamodb:${var.myregion}:${var.accountId}:table/commit_db"
+      },
+      {
+        "Sid" : "S3BucketAccess",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:PutObject"
+        ],
+        "Resource" : [
+          "arn:aws:s3:::${aws_s3_bucket.commit_bucket.bucket}/*"
+        ]
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : "logs:CreateLogGroup",
+        "Resource" : "arn:aws:logs:${var.myregion}:${var.accountId}:*"
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        "Resource" : [
+          "arn:aws:logs:${var.myregion}:${var.accountId}:log-group:/aws/lambda/LambdaForUsers:*"
+        ]
+      }
+    ]
+    }
+
+  )
 }
 resource "aws_iam_role" "lambda_role_users" {
   name               = "lambda_role_users"

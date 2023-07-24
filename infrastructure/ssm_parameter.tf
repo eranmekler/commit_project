@@ -1,3 +1,4 @@
+#SSM parameter store, define your desired values.
 resource "aws_ssm_parameter" "Greeting_1" {
   name  = "Greeting_1"
   type  = "String"

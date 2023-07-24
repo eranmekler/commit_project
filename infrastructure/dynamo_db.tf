@@ -1,3 +1,5 @@
+#DynamoDB
+
 resource "aws_dynamodb_table" "commit_dynamo_db_table" {
   name           = "commit_db"
   hash_key       = "username"  # partition key
@@ -5,7 +7,7 @@ resource "aws_dynamodb_table" "commit_dynamo_db_table" {
   write_capacity = 20
   read_capacity  = 20
 
-   attribute {
+  attribute {
     name = "username"
     type = "S"
   }

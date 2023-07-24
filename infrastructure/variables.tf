@@ -1,3 +1,4 @@
+#Project Variables
 variable "myregion" {
   description = "region"
   type        = string
