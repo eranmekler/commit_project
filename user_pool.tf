@@ -46,7 +46,7 @@ resource "aws_cognito_user_pool_client" "commit_client" {
   allowed_oauth_flows                  = ["code"] #maybe need to be configured to lambda
   allowed_oauth_scopes                 = ["openid", "email"]
   supported_identity_providers         = ["COGNITO"]
-  callback_urls                        = ["${aws_api_gateway_deployment.example.invoke_url}dev/auth"]
+  callback_urls                        = ["${aws_api_gateway_deployment.example.invoke_url}dev/auth", aws_api_gateway_deployment.example.invoke_url]
   default_redirect_uri                 =  "${aws_api_gateway_deployment.example.invoke_url}dev/auth"
   allowed_oauth_flows_user_pool_client = true
   

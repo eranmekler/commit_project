@@ -13,9 +13,17 @@ resource "null_resource" "update_lambda_env" {
   }
   provisioner "local-exec" {
     command = <<-EOT
-      aws lambda update-function-configuration \
-        --function-name ${aws_lambda_function.example_lambda.function_name} \
-        --environment "Variables={API_URL=${aws_api_gateway_deployment.example.invoke_url}dev/auth/login,CLIENT_ID=${aws_cognito_user_pool_client.commit_client.id},CLIENT_SECRET=${aws_cognito_user_pool_client.commit_client.client_secret},REDIRECT_URI=${aws_cognito_user_pool_client.commit_client.default_redirect_uri},TOKEN_URL=https://${aws_cognito_user_pool_domain.commit_cognito_hosted_ui.domain}.auth.${var.myregion}.amazoncognito.com/oauth2/token}"
+ aws lambda update-function-configuration \
+    --function-name ${aws_lambda_function.example_lambda.function_name} \
+    --region ${var.myregion} \
+    --environment "Variables={\
+        API_URL=${aws_api_gateway_deployment.example.invoke_url}dev/auth/login,\
+        CLIENT_ID=${aws_cognito_user_pool_client.commit_client.id},\
+        CLIENT_SECRET=${aws_cognito_user_pool_client.commit_client.client_secret},\
+        REDIRECT_URI=${aws_cognito_user_pool_client.commit_client.default_redirect_uri},\
+        TOKEN_URL=https://${aws_cognito_user_pool_domain.commit_cognito_hosted_ui.domain}.auth.${var.myregion}.amazoncognito.com/oauth2/token\
+    }"
+
     EOT
   }
   depends_on = [ aws_cognito_user_pool_client.commit_client ]

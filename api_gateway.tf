@@ -1,14 +1,3 @@
-variable "myregion" {
-  description = "region"
-  type        = string
-  default     = "eu-west-1"
-}
-
-variable "accountId" {
-  description = "accountid"
-  type        = string
-  default     = "141521707460"
-}
 
 resource "aws_api_gateway_rest_api" "example_api" {
   name = "example_api"
