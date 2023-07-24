@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "LambdaAuthPolicy" {
         {
             "Effect": "Allow",
             "Action": "logs:CreateLogGroup",
-            "Resource": "arn:aws:logs:eu-west-1:141521707460:*"
+            "Resource": "arn:aws:logs:eu-west-1:${var.accountId}:*"
         },
         {
             "Effect": "Allow",
@@ -68,7 +68,7 @@ resource "aws_iam_role_policy" "LambdaAuthPolicy" {
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:eu-west-1:141521707460:log-group:/aws/lambda/LambdaAuth:*"
+                "arn:aws:logs:eu-west-1:${var.accountId}:log-group:/aws/lambda/LambdaAuth:*"
             ]
         }
     ]
@@ -116,14 +116,14 @@ resource "aws_iam_policy" "LambdaPolicyUsers" {
                 "ssm:GetParameter",
                 "ssm:DescribeParameters"
             ],
-            "Resource": "arn:aws:ssm:eu-west-1:141521707460:*"
+            "Resource": "arn:aws:ssm:eu-west-1:${var.accountId}:*"
         },
         {
             "Effect": "Allow",
             "Action": [
                 "dynamodb:PutItem"
             ],
-            "Resource": "arn:aws:dynamodb:eu-west-1:141521707460:table/commit_db"
+            "Resource": "arn:aws:dynamodb:eu-west-1:${var.accountId}:table/commit_db"
         },
         {
             "Sid": "S3BucketAccess",
@@ -138,7 +138,7 @@ resource "aws_iam_policy" "LambdaPolicyUsers" {
         {
             "Effect": "Allow",
             "Action": "logs:CreateLogGroup",
-            "Resource": "arn:aws:logs:eu-west-1:141521707460:*"
+            "Resource": "arn:aws:logs:eu-west-1:${var.accountId}:*"
         },
         {
             "Effect": "Allow",
@@ -147,7 +147,7 @@ resource "aws_iam_policy" "LambdaPolicyUsers" {
                 "logs:PutLogEvents"
             ],
             "Resource": [
-                "arn:aws:logs:eu-west-1:141521707460:log-group:/aws/lambda/LambdaForUsers:*"
+                "arn:aws:logs:eu-west-1:${var.accountId}:log-group:/aws/lambda/LambdaForUsers:*"
             ]
         }
     ]

@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "commit_bucket" {
-  bucket = "yuval-eran-commit"
+  bucket_prefix = "yuval-eran-commit"
 
   tags = {
     Name        = "Yuval_Eran_Commit"

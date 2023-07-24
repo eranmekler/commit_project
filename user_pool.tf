@@ -32,7 +32,7 @@
 # configuration of the cognito hosted ui.need to be configured
 
 resource "aws_cognito_user_pool_domain" "commit_cognito_hosted_ui" {
-  domain        = "commit-project"
+  domain        = "commit-project-test"
   user_pool_id  = aws_cognito_user_pool.commit_users.id
 }
 
