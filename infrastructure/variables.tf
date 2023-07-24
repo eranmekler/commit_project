@@ -9,5 +9,9 @@ variable "accountId" {
   type        = string
   default     = "1111111111"
 }
-
+variable "commit_domain" {
+  description = "commit-proj"
+  type        = string
+  default     = "commit-proj"
+}
 

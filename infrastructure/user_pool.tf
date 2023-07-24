@@ -5,7 +5,7 @@
   resource "aws_cognito_user_pool" "commit_users" {
   name = "mypool"
 
-  username_attributes = ["email"]
+  username_attributes      = ["email"]
   auto_verified_attributes = ["email"]
 
   # allow non-admin user to create new users
@@ -23,8 +23,8 @@
     minimum_length = 8
     require_lowercase = anytrue([true])
     require_uppercase = anytrue([true])
-    require_numbers = anytrue([true])
-    require_symbols = anytrue([true])
+    require_numbers   = anytrue([true])
+    require_symbols   = anytrue([true])
   }
 
   }
@@ -32,7 +32,7 @@
 # configuration of the cognito hosted ui.need to be configured
 
 resource "aws_cognito_user_pool_domain" "commit_cognito_hosted_ui" {
-  domain        = "commit-project-test"
+  domain        = var.commit_domain
   user_pool_id  = aws_cognito_user_pool.commit_users.id
 }
 
