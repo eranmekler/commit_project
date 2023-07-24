@@ -7,12 +7,7 @@
 
   username_attributes = ["email"]
   auto_verified_attributes = ["email"]
-  schema {
-    name                = "username"
-    attribute_data_type = "String"
-    mutable             = true
-    required            = false
-  }
+
   # allow non-admin user to create new users
   admin_create_user_config {
     allow_admin_create_user_only = false
@@ -32,12 +27,6 @@
     require_symbols = anytrue([true])
   }
 
-  account_recovery_setting {
-    recovery_mechanism {
-      name     = "verified_email"
-      priority = 1
-    }
-  }
   }
 
 # configuration of the cognito hosted ui.need to be configured
