@@ -1,4 +1,5 @@
-![fixed2lambdas (1)](https://github.com/yuvalcoren/commit_project/assets/132250761/26d1f440-997e-407b-9912-0ff949d08db7)
+![fixed2lambdas drawio (2)](https://github.com/eranmekler/commit_project/assets/132250761/5dcea96d-edc7-4a15-8ff9-3385b3dfc9bd)
+
 # Serverless Authentication Solution with AWS
 
 This repository contains a serverless solution using various AWS services to authenticate users and log their activities. This README provides a detailed explanation of each component used in the solution.
